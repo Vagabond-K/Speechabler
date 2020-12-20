@@ -6,6 +6,7 @@
 미천한 개발 능력이지만 부디 필요하신 분들에게 조금이라도 도움이 되길 바랍니다.
 
 프로그램 사용법은 다음의 블로그 링크를 참조하시기 바랍니다.   
-https://blog.naver.com/PostList.nhn?blogId=vagabond-k&from=postList&categoryNo=14   
-블로그의 본 프로젝트 관련 글에는 광고를 노출시키지 않습니다.   
-왜냐하면... 그러면 안될 것 같아서요.
+https://blog.naver.com/PostList.nhn?blogId=vagabond-k&from=postList&categoryNo=14
+
+<span style="color:red">**블로그의 본 프로젝트 관련 글에는 광고를 노출시키지 않습니다.   
+왜냐하면... 그러면 안될 것 같아서요.**</span>
