@@ -1,6 +1,5 @@
 # 루게릭병 환우의 목소리 프로젝트
 [![License](https://img.shields.io/badge/license-LGPL--2.1-blue.svg)](https://licenses.nuget.org/LGPL-2.1-only)
-[![Github All Releases](https://img.shields.io/github/downloads/accord-net/framework/total.svg)](https://github.com/Vagabond-K/Speechabler/releases/tag/Speechabler)
 
 루게릭병 환우 분들 중에는 호흡근이 약화되어,   
 그에 대한 합병증을 예방하기 위해 기관절개 수술을 받으신 분들이 있습니다.   
