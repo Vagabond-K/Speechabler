@@ -69,8 +69,11 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="VagabondK, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VagabondK.1.0.1\lib\net461\VagabondK.dll</HintPath>
+    <Reference Include="VagabondK, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VagabondK.1.0.3\lib\net45\VagabondK.dll</HintPath>
+    </Reference>
+    <Reference Include="VagabondK.Windows, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VagabondK.Windows.1.0.1\lib\net45\VagabondK.Windows.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
@@ -101,12 +104,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
-    <Compile Include="Converters\IsZeroToVisibilityConverter.cs" />
-    <Compile Include="Converters\NegationConverter.cs" />
     <Compile Include="Util\Dialog.cs" />
     <Compile Include="Util\JsonSetting.cs" />
-    <Compile Include="Util\ThemeWindow.cs" />
     <Compile Include="Models\SmsApiSetting.cs" />
     <Compile Include="Models\SmsReceiver.cs" />
     <Compile Include="Models\SmsSetting.cs" />
@@ -129,10 +128,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Themes\generic.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\MessageItem.cs" />

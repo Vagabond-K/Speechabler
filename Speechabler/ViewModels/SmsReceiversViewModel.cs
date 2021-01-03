@@ -15,23 +15,17 @@ namespace Speechabler.ViewModels
     {
         public SmsSetting Settings { get => Get(() => new SmsSetting()); private set => Set(value); }
 
-        public InstantCommand AddReceiverCommand { get => Get(() => new InstantCommand(() =>
+        public IInstantCommand AddReceiverCommand { get => Get(() =>
         {
             SmsReceiver smsReceiver = new SmsReceiver();
 
             if (EditReceiver(smsReceiver))
                 Settings.Receivers.Insert(Settings.Receivers.Count - 1, smsReceiver);
-        })); }
+        }); }
 
-        public InstantCommand<SmsReceiver> EditReceiverCommand { get => Get(() => new InstantCommand<SmsReceiver>((smsReceiver) =>
-        {
-            EditReceiver(smsReceiver);
-        })); }
+        public IInstantCommand EditReceiverCommand { get => Get<SmsReceiver>(smsReceiver => EditReceiver(smsReceiver)); }
 
-        public InstantCommand<SmsReceiver> RemoveReceiverCommand { get => Get(() => new InstantCommand<SmsReceiver>((smsReceiver) =>
-        {
-            Settings.Receivers.Remove(smsReceiver);
-        })); }
+        public IInstantCommand RemoveReceiverCommand { get => Get<SmsReceiver>(smsReceiver => Settings.Receivers.Remove(smsReceiver)); }
 
         private bool EditReceiver(SmsReceiver smsReceiver)
         {
@@ -52,7 +46,7 @@ namespace Speechabler.ViewModels
             return false;
         }
 
-        public InstantCommand EditSmsApiSettingCommand { get => Get(() => new InstantCommand(() =>
+        public IInstantCommand EditSmsApiSettingCommand { get => Get(() =>
         {
             var viewModel = new EditSmsApiSettingViewModel
             {
@@ -69,7 +63,7 @@ namespace Speechabler.ViewModels
                 Settings.SmsApiSetting.SecretKey = viewModel.SecretKey;
                 Settings.SmsApiSetting.SenderPhoneNumber = viewModel.SenderPhoneNumber;
             }
-        })); }
+        }); }
 
         public void LoadSettings()
         {

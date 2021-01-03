@@ -51,28 +51,28 @@ namespace Speechabler.ViewModels
         
         public bool IsEditMode { get => Get(false); private set => Set(value); }
 
-        public InstantCommand EditContentsCommand { get => Get(() => new InstantCommand(() =>
+        public IInstantCommand EditContentsCommand { get => Get(() =>
         {
             SaveSettings();
             SmsReceivers.Settings.Receivers.Add(NewSmsReceiver.Instance);
             IsEditMode = true;
-        })); }
+        }); }
 
-        public InstantCommand CancelEditContentsCommand { get => Get(() => new InstantCommand(() =>
+        public IInstantCommand CancelEditContentsCommand { get => Get(() =>
         {
             LoadSettings();
             IsEditMode = false;
-        })); }
+        }); }
 
-        public InstantCommand SaveContentsCommand { get => Get(() => new InstantCommand(() =>
+        public IInstantCommand SaveContentsCommand { get => Get(() =>
         {
             SmsReceivers.Settings.Receivers.Remove(NewSmsReceiver.Instance);
             SaveSettings();
             IsEditMode = false;
-        })); }
+        }); }
 
 
-        public InstantCommand<MessageItem> MessageClickCommand { get => Get(() => new InstantCommand<MessageItem>(async (messageItem) =>
+        public IInstantCommand MessageClickCommand { get => Get<MessageItem>(async messageItem =>
         {
             speechSynthesizer.SpeakAsyncCancelAll();
 
@@ -147,7 +147,7 @@ namespace Speechabler.ViewModels
                 }
                 catch { }
             }
-        })); }
+        }); }
 
         public string MakeSignature(HttpMethod method, string url, string secretKey, string timeStamp, string accessKeyID)
         {
@@ -195,7 +195,7 @@ namespace Speechabler.ViewModels
         }
 
 
-        public InstantCommand ShowKeyboardCommand { get => Get(() => new InstantCommand(() =>
+        public IInstantCommand ShowKeyboardCommand { get => Get(() =>
         {
             new Process
             {
@@ -204,7 +204,7 @@ namespace Speechabler.ViewModels
                     WindowStyle = ProcessWindowStyle.Maximized
                 }
             }.Start();
-        })); }
+        }); }
 
         public void LoadSettings()
         {

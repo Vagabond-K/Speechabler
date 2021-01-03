@@ -15,7 +15,7 @@ namespace Speechabler.ViewModels
     {
         public MessagesSetting Settings { get => Get(() => new MessagesSetting()); private set => Set(value); }
 
-        public InstantCommand SetMatrixCommand { get => Get(() => new InstantCommand(() =>
+        public IInstantCommand SetMatrixCommand { get => Get(() =>
         {
             var viewModel = new SetMatrixViewModel
             {
@@ -28,10 +28,8 @@ namespace Speechabler.ViewModels
             };
 
             if (new SetMatrixWindow { DataContext = viewModel, Owner = Application.Current.MainWindow }.ShowDialog() == true)
-            {
                 Settings.SetMatrix(viewModel.Rows, viewModel.Columns);
-            }
-        })); }
+        }); }
 
         public void LoadSettings()
         {
