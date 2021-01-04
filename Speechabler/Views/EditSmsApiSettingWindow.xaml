@@ -8,7 +8,6 @@
     xmlns:local="clr-namespace:Speechabler"
     xmlns:model="clr-namespace:Speechabler.Models"
     xmlns:vm="clr-namespace:Speechabler.ViewModels"
-    xmlns:conv="clr-namespace:Speechabler.Converters"
     mc:Ignorable="d"
     Title="SMS API 설정" 
     AllowsTransparency="True"
