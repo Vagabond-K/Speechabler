@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VagabondK.App;
+using VagabondK.Korean.Hangul;
 
 namespace Speechabler.ViewModels
 {
@@ -16,6 +17,7 @@ namespace Speechabler.ViewModels
         {
             this.speechUtil = speechUtil;
             this.focusHandler = focusHandler;
+            (hangulKeyInputModel.Automata as HangulAutomata).ReplaceInputTimeout = 600;
         }
 
         private readonly IFocusHandler focusHandler;
