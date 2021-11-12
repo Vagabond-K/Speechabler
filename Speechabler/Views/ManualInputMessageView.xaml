@@ -287,15 +287,15 @@
                 <Button Content="?" Grid.Row="1" Grid.Column="6" Grid.ColumnSpan="1"/>
                 <Button Content="!" Grid.Row="1" Grid.Column="7" Grid.ColumnSpan="1"/>
 
-                <Button Content="ㄱㅋ" Grid.Row="2" Grid.Column="0"/>
+                <Button Content="ㄱㅋ" CommandParameter="ㄱㅋㄲ" Grid.Row="2" Grid.Column="0"/>
                 <Button Content="ㄴㄹ" Grid.Row="2" Grid.Column="2"/>
-                <Button Content="ㄷㅌ" Grid.Row="2" Grid.Column="4"/>
+                <Button Content="ㄷㅌ" CommandParameter="ㄷㅌㄸ" Grid.Row="2" Grid.Column="4"/>
                 <Button Content="," Grid.Row="2" Grid.Column="6" Grid.ColumnSpan="1"/>
                 <Button Content="." Grid.Row="2" Grid.Column="7" Grid.ColumnSpan="1"/>
 
-                <Button Content="ㅂㅍ" Grid.Row="3" Grid.Column="0"/>
-                <Button Content="ㅅㅎ" Grid.Row="3" Grid.Column="2"/>
-                <Button Content="ㅈㅊ" Grid.Row="3" Grid.Column="4"/>
+                <Button Content="ㅂㅍ" CommandParameter="ㅂㅍㅃ" Grid.Row="3" Grid.Column="0"/>
+                <Button Content="ㅅㅎ" CommandParameter="ㅅㅎㅆ" Grid.Row="3" Grid.Column="2"/>
+                <Button Content="ㅈㅊ" CommandParameter="ㅈㅊㅉ" Grid.Row="3" Grid.Column="4"/>
                 <Button Style="{StaticResource BackspaceButton}" Grid.Row="3" Grid.Column="6"/>
 
                 <Button Style="{StaticResource MoveLeftButton}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="1"/>
