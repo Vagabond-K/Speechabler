@@ -100,11 +100,11 @@
     <Reference Include="VagabondK.DependencyInjection, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VagabondK.DependencyInjection.1.0.6\lib\net461\VagabondK.DependencyInjection.dll</HintPath>
     </Reference>
-    <Reference Include="VagabondK.Korean, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VagabondK.Korean.1.0.1\lib\net461\VagabondK.Korean.dll</HintPath>
+    <Reference Include="VagabondK.Korean, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VagabondK.Korean.1.0.2\lib\net461\VagabondK.Korean.dll</HintPath>
     </Reference>
-    <Reference Include="VagabondK.Korean.Windows, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VagabondK.Korean.Windows.1.0.1\lib\net461\VagabondK.Korean.Windows.dll</HintPath>
+    <Reference Include="VagabondK.Korean.Windows, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VagabondK.Korean.Windows.1.0.2\lib\net461\VagabondK.Korean.Windows.dll</HintPath>
     </Reference>
     <Reference Include="VagabondK.Windows, Version=1.0.7.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VagabondK.Windows.1.0.7\lib\net461\VagabondK.Windows.dll</HintPath>
