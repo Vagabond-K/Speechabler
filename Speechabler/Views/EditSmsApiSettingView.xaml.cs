@@ -19,20 +19,17 @@ using System.Windows.Shapes;
 
 namespace Speechabler.Views
 {
-    /// <summary>
-    /// SetMatrixWindow.xaml에 대한 상호 작용 논리
-    /// </summary>
-    public partial class SetMatrixWindow : VagabondK.ThemeWindow
+    [View]
+    public partial class EditSmsApiSettingView : UserControl
     {
-        public SetMatrixWindow()
+        public EditSmsApiSettingView()
         {
             InitializeComponent();
-            Loaded += EditReceiverWindow_Loaded;
         }
 
-        private void EditReceiverWindow_Loaded(object sender, RoutedEventArgs e)
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
-            Slider_Rows.Focus();
+            System.Diagnostics.Process.Start(e.Uri.AbsoluteUri);
         }
     }
 }

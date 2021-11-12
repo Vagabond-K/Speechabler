@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Speechabler"
              xmlns:vk="http://schemas.vagabond-k.com/winfx/2016/xaml"
-             StartupUri="Views/MainWindow.xaml">
+             StartupUri="ShellWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

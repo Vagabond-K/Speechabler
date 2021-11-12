@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Speechabler.ViewModels
 {
+    [ViewModel]
     class EditSmsApiSettingViewModel : NotifyPropertyChangeObject
     {
         public string ServiceID { get => Get(""); set => Set(value); }

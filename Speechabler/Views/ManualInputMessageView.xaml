@@ -1,0 +1,512 @@
+﻿<UserControl 
+    x:Class="Speechabler.Views.ManualInputMessageView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:Speechabler.Views"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:vk="http://schemas.vagabond-k.com/winfx/2016/xaml"
+    xmlns:vkc="clr-namespace:VagabondK.Windows.Commands;assembly=VagabondK.Windows"
+    xmlns:vm="clr-namespace:Speechabler.ViewModels"
+    mc:Ignorable="d" 
+    d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance Type=vm:ManualInputMessageViewModel}">
+    <Grid x:Name="Root">
+        <FrameworkElement.Resources>
+            <ControlTemplate x:Key="MessageButton" TargetType="Button">
+                <ControlTemplate.Resources>
+                    <Storyboard x:Key="HoverOn">
+                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="HoverBorder" Storyboard.TargetProperty="(UIElement.Opacity)" RepeatBehavior="Forever" AutoReverse="True">
+                            <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1" />
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="HoverGrid" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1" />
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                    <Storyboard x:Key="PressedOn">
+                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PressedBorder" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <SplineDoubleKeyFrame KeyTime="00:00:00.0000000" Value="1" />
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                    <Storyboard x:Key="PressedOff">
+                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PressedBorder" Storyboard.TargetProperty="(UIElement.Opacity)">
+                            <SplineDoubleKeyFrame KeyTime="00:00:00.0000000" Value="0" />
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </ControlTemplate.Resources>
+                <Grid>
+                    <Border Background="{TemplateBinding Background}" CornerRadius="10"/>
+                    <Border CornerRadius="10" BorderThickness="3" BorderBrush="{TemplateBinding BorderBrush}"/>
+                    <Grid x:Name="HoverGrid" Opacity="0">
+                        <Rectangle x:Name="HoverBorder" Fill="#80FFFFFF" RadiusX="10" RadiusY="10" Opacity="0"/>
+                        <Rectangle RadiusX="10" RadiusY="10" StrokeThickness="3" Stroke="White"/>
+                    </Grid>
+                    <Border x:Name="PressedBorder" Background="#80000000" CornerRadius="10" Opacity="0" BorderThickness="3"/>
+                    <Border CornerRadius="10" BorderThickness="3">
+                        <Viewbox>
+                            <ContentPresenter 
+                                    TextBlock.TextAlignment="Center"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="5" 
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True" />
+                        </Viewbox>
+                    </Border>
+                </Grid>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="true">
+                        <Trigger.ExitActions>
+                            <StopStoryboard BeginStoryboardName="MessageHoverOn"/>
+                        </Trigger.ExitActions>
+                        <Trigger.EnterActions>
+                            <BeginStoryboard Storyboard="{StaticResource HoverOn}" x:Name="MessageHoverOn" />
+                        </Trigger.EnterActions>
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="true">
+                        <Trigger.ExitActions>
+                            <BeginStoryboard Storyboard="{StaticResource PressedOff}" />
+                        </Trigger.ExitActions>
+                        <Trigger.EnterActions>
+                            <BeginStoryboard Storyboard="{StaticResource PressedOn}" />
+                        </Trigger.EnterActions>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+
+            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="Margin" Value="3"/>
+                <Setter Property="Focusable" Value="False"/>
+                <Setter Property="Grid.ColumnSpan" Value="2"/>
+                <Setter Property="Background" Value="#FF303030"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="BorderBrush" Value="#30FFFFFF"/>
+                <Setter Property="Command" Value="{Binding InputCharacterCommand}"/>
+                <Setter Property="CommandParameter" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"/>
+                <Setter Property="Template" Value="{StaticResource MessageButton}"/>
+            </Style>
+
+            <Style x:Key="BackspaceButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+                <Setter Property="Content" Value="&#xE750;"/>
+                <Setter Property="Command" Value="{Binding InputBackspaceCommand}"/>
+                <Setter Property="CommandParameter" Value="{x:Null}"/>
+                <Setter Property="Background" Value="#FF400000"/>
+            </Style>
+
+            <Style x:Key="SpeechButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+                <Setter Property="Content" Value="&#xE995;"/>
+                <Setter Property="Command" Value="{Binding SpeechAndSendSmsCommand}"/>
+                <Setter Property="CommandParameter" Value="{x:Null}"/>
+                <Setter Property="Background" Value="#FF003000"/>
+            </Style>
+
+            <Style x:Key="MoveLeftButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="Content" Value="←"/>
+                <Setter Property="Command" Value="{x:Null}"/>
+                <EventSetter Event="Click" Handler="MoveLeftButtonClick"/>
+            </Style>
+
+            <Style x:Key="MoveRightButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="Content" Value="→"/>
+                <Setter Property="Command" Value="{x:Null}"/>
+                <EventSetter Event="Click" Handler="MoveRightButtonClick"/>
+            </Style>
+
+            <Style x:Key="ShiftButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="Content" Value="Shift"/>
+                <Setter Property="Command" Value="{Binding ShiftButtonCommand}"/>
+                <Setter Property="CommandParameter" Value="{x:Null}"/>
+                <Setter Property="Background" Value="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=#FF603000, False=#FF303030}}"/>
+            </Style>
+
+        </FrameworkElement.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="Message" Margin="3" BorderThickness="3" FontSize="64" Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}" Padding="12" vk:Focus.IsDefault="True"/>
+            <Button Grid.Column="1" Command="{Binding EraseMessageCommand}" CommandParameter="{x:Null}"
+                    Content="&#xE75C;" FontFamily="Segoe MDL2 Assets" Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=ActualHeight}"/>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <RadioButton Content="한글 키보드" IsChecked="{Binding Mode, Converter={vk:EqualsConverter}, ConverterParameter=HangulKeyboard}"/>
+            <RadioButton Grid.Column="1" Content="한글 천지인" IsChecked="{Binding Mode, Converter={vk:EqualsConverter}, ConverterParameter=Hangul3BasesPad}"/>
+            <RadioButton Grid.Column="2" Content="영문 키보드" IsChecked="{Binding Mode, Converter={vk:EqualsConverter}, ConverterParameter=EnglishKeyboard}"/>
+            <RadioButton Grid.Column="3" Content="특수문자" IsChecked="{Binding Mode, Converter={vk:EqualsConverter}, ConverterParameter=SpecialChracters}"/>
+            <CheckBox Grid.Column="4" Content="미리보기" IsChecked="{Binding UsePreview}" Margin="3"/>
+        </Grid>
+
+        <Grid Grid.Row="2" x:Name="InputRegion" Background="Transparent" Cursor="{Binding UsePreview, Converter={vk:BooleanToObjectConverter True=Hand}}">
+            <Grid Visibility="{Binding Mode, Converter={vk:EqualsToVisibilityConverter}, ConverterParameter=HangulKeyboard}">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Content="1" Grid.Column="0"/>
+                <Button Content="2" Grid.Column="2"/>
+                <Button Content="3" Grid.Column="4"/>
+                <Button Content="4" Grid.Column="6"/>
+                <Button Content="5" Grid.Column="8"/>
+                <Button Content="6" Grid.Column="10"/>
+                <Button Content="7" Grid.Column="12"/>
+                <Button Content="8" Grid.Column="14"/>
+                <Button Content="9" Grid.Column="16"/>
+                <Button Content="0" Grid.Column="18"/>
+
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=ㅃ, False=ㅂ}}" Grid.Row="1" Grid.Column="0"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=ㅉ, False=ㅈ}}" Grid.Row="1" Grid.Column="2"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=ㄸ, False=ㄷ}}" Grid.Row="1" Grid.Column="4"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=ㄲ, False=ㄱ}}" Grid.Row="1" Grid.Column="6"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=ㅆ, False=ㅅ}}" Grid.Row="1" Grid.Column="8"/>
+                <Button Content="ㅛ" Grid.Row="1" Grid.Column="10"/>
+                <Button Content="ㅕ" Grid.Row="1" Grid.Column="12"/>
+                <Button Content="ㅑ" Grid.Row="1" Grid.Column="14"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=ㅒ, False=ㅐ}}" Grid.Row="1" Grid.Column="16"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=ㅖ, False=ㅔ}}" Grid.Row="1" Grid.Column="18"/>
+
+                <Button Content="ㅁ" Grid.Row="2" Grid.Column="1"/>
+                <Button Content="ㄴ" Grid.Row="2" Grid.Column="3"/>
+                <Button Content="ㅇ" Grid.Row="2" Grid.Column="5"/>
+                <Button Content="ㄹ" Grid.Row="2" Grid.Column="7"/>
+                <Button Content="ㅎ" Grid.Row="2" Grid.Column="9"/>
+                <Button Content="ㅗ" Grid.Row="2" Grid.Column="11"/>
+                <Button Content="ㅓ" Grid.Row="2" Grid.Column="13"/>
+                <Button Content="ㅏ" Grid.Row="2" Grid.Column="15"/>
+                <Button Content="ㅣ" Grid.Row="2" Grid.Column="17"/>
+
+                <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource ShiftButton}"/>
+                <Button Content="ㅋ" Grid.Row="3" Grid.Column="3"/>
+                <Button Content="ㅌ" Grid.Row="3" Grid.Column="5"/>
+                <Button Content="ㅊ" Grid.Row="3" Grid.Column="7"/>
+                <Button Content="ㅍ" Grid.Row="3" Grid.Column="9"/>
+                <Button Content="ㅠ" Grid.Row="3" Grid.Column="11"/>
+                <Button Content="ㅜ" Grid.Row="3" Grid.Column="13"/>
+                <Button Content="ㅡ" Grid.Row="3" Grid.Column="15"/>
+                <Button Style="{StaticResource BackspaceButton}" Grid.Row="3" Grid.Column="17" Grid.ColumnSpan="3"/>
+
+                <Button Style="{StaticResource MoveLeftButton}" Grid.Row="4" Grid.Column="0"/>
+                <Button Style="{StaticResource MoveRightButton}" Grid.Row="4" Grid.Column="2"/>
+                <Button Content="," Grid.Row="4" Grid.Column="4"/>
+                <Button Content=" " Grid.Row="4" Grid.Column="6" Grid.ColumnSpan="8"/>
+                <Button Content="." Grid.Row="4" Grid.Column="14"/>
+                <Button Style="{StaticResource SpeechButton}" Grid.Row="4" Grid.Column="16" Grid.ColumnSpan="4"/>
+            </Grid>
+            <Grid Visibility="{Binding Mode, Converter={vk:EqualsToVisibilityConverter}, ConverterParameter=Hangul3BasesPad}">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.ColumnSpan="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button Content="1" Grid.Column="0"/>
+                    <Button Content="2" Grid.Column="2"/>
+                    <Button Content="3" Grid.Column="4"/>
+                    <Button Content="4" Grid.Column="6"/>
+                    <Button Content="5" Grid.Column="8"/>
+                    <Button Content="6" Grid.Column="10"/>
+                    <Button Content="7" Grid.Column="12"/>
+                    <Button Content="8" Grid.Column="14"/>
+                    <Button Content="9" Grid.Column="16"/>
+                    <Button Content="0" Grid.Column="18"/>
+                </Grid>
+                <Button Content="ㅣ" Grid.Row="1" Grid.Column="0"/>
+                <Button Content="ᆞ" Grid.Row="1" Grid.Column="2"/>
+                <Button Content="ㅡ" Grid.Row="1" Grid.Column="4"/>
+                <Button Content="?" Grid.Row="1" Grid.Column="6" Grid.ColumnSpan="1"/>
+                <Button Content="!" Grid.Row="1" Grid.Column="7" Grid.ColumnSpan="1"/>
+
+                <Button Content="ㄱㅋ" Grid.Row="2" Grid.Column="0"/>
+                <Button Content="ㄴㄹ" Grid.Row="2" Grid.Column="2"/>
+                <Button Content="ㄷㅌ" Grid.Row="2" Grid.Column="4"/>
+                <Button Content="," Grid.Row="2" Grid.Column="6" Grid.ColumnSpan="1"/>
+                <Button Content="." Grid.Row="2" Grid.Column="7" Grid.ColumnSpan="1"/>
+
+                <Button Content="ㅂㅍ" Grid.Row="3" Grid.Column="0"/>
+                <Button Content="ㅅㅎ" Grid.Row="3" Grid.Column="2"/>
+                <Button Content="ㅈㅊ" Grid.Row="3" Grid.Column="4"/>
+                <Button Style="{StaticResource BackspaceButton}" Grid.Row="3" Grid.Column="6"/>
+
+                <Button Style="{StaticResource MoveLeftButton}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="1"/>
+                <Button Style="{StaticResource MoveRightButton}" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="1"/>
+                <Button Content="ㅇㅁ" Grid.Row="4" Grid.Column="2"/>
+                <Button Content=" " Grid.Row="4" Grid.Column="4"/>
+                <Button Style="{StaticResource SpeechButton}" Grid.Row="4" Grid.Column="6"/>
+            </Grid>
+            <Grid Visibility="{Binding Mode, Converter={vk:EqualsToVisibilityConverter}, ConverterParameter=EnglishKeyboard}">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Content="1" Grid.Column="0"/>
+                <Button Content="2" Grid.Column="2"/>
+                <Button Content="3" Grid.Column="4"/>
+                <Button Content="4" Grid.Column="6"/>
+                <Button Content="5" Grid.Column="8"/>
+                <Button Content="6" Grid.Column="10"/>
+                <Button Content="7" Grid.Column="12"/>
+                <Button Content="8" Grid.Column="14"/>
+                <Button Content="9" Grid.Column="16"/>
+                <Button Content="0" Grid.Column="18"/>
+
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=Q, False=q}}" Grid.Row="1" Grid.Column="0"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=W, False=w}}" Grid.Row="1" Grid.Column="2"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=E, False=e}}" Grid.Row="1" Grid.Column="4"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=R, False=r}}" Grid.Row="1" Grid.Column="6"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=T, False=t}}" Grid.Row="1" Grid.Column="8"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=Y, False=y}}" Grid.Row="1" Grid.Column="10"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=U, False=u}}" Grid.Row="1" Grid.Column="12"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=I, False=i}}" Grid.Row="1" Grid.Column="14"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=O, False=o}}" Grid.Row="1" Grid.Column="16"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=P, False=p}}" Grid.Row="1" Grid.Column="18"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=A, False=a}}" Grid.Row="2" Grid.Column="1"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=S, False=s}}" Grid.Row="2" Grid.Column="3"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=D, False=d}}" Grid.Row="2" Grid.Column="5"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=F, False=f}}" Grid.Row="2" Grid.Column="7"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=G, False=g}}" Grid.Row="2" Grid.Column="9"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=H, False=h}}" Grid.Row="2" Grid.Column="11"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=J, False=j}}" Grid.Row="2" Grid.Column="13"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=K, False=k}}" Grid.Row="2" Grid.Column="15"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=L, False=l}}" Grid.Row="2" Grid.Column="17"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=Z, False=z}}" Grid.Row="3" Grid.Column="3"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=X, False=x}}" Grid.Row="3" Grid.Column="5"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=C, False=c}}" Grid.Row="3" Grid.Column="7"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=V, False=v}}" Grid.Row="3" Grid.Column="9"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=B, False=b}}" Grid.Row="3" Grid.Column="11"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=N, False=n}}" Grid.Row="3" Grid.Column="13"/>
+                <Button Content="{Binding IsShift, Converter={vk:BooleanToObjectConverter True=M, False=m}}" Grid.Row="3" Grid.Column="15"/>
+
+                <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource ShiftButton}"/>
+                <Button Style="{StaticResource BackspaceButton}" Grid.Row="3" Grid.Column="17" Grid.ColumnSpan="3"/>
+
+                <Button Style="{StaticResource MoveLeftButton}" Grid.Row="4" Grid.Column="0"/>
+                <Button Style="{StaticResource MoveRightButton}" Grid.Row="4" Grid.Column="2"/>
+                <Button Content="," Grid.Row="4" Grid.Column="4"/>
+                <Button Content=" " Grid.Row="4" Grid.Column="6" Grid.ColumnSpan="8"/>
+                <Button Content="." Grid.Row="4" Grid.Column="14"/>
+                <Button Style="{StaticResource SpeechButton}" Grid.Row="4" Grid.Column="16" Grid.ColumnSpan="4"/>
+            </Grid>
+            <Grid Visibility="{Binding Mode, Converter={vk:EqualsToVisibilityConverter}, ConverterParameter=SpecialChracters}">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Content="!" Grid.Column="0"/>
+                <Button Content="@" Grid.Column="2"/>
+                <Button Content="#" Grid.Column="4"/>
+                <Button Content="$" Grid.Column="6"/>
+                <Button Content="%" Grid.Column="8"/>
+                <Button Content="^" Grid.Column="10"/>
+                <Button Content="&amp;" Grid.Column="12"/>
+                <Button Content="*" Grid.Column="14"/>
+                <Button Content="(" Grid.Column="16"/>
+                <Button Content=")" Grid.Column="18"/>
+
+                <Button Content="+" Grid.Row="1" Grid.Column="0"/>
+                <Button Content="-" Grid.Row="1" Grid.Column="2"/>
+                <Button Content="×" Grid.Row="1" Grid.Column="4"/>
+                <Button Content="÷" Grid.Row="1" Grid.Column="6"/>
+                <Button Content="=" Grid.Row="1" Grid.Column="8"/>
+                <Button Content="/" Grid.Row="1" Grid.Column="10"/>
+                <Button Content="&lt;" Grid.Row="1" Grid.Column="12"/>
+                <Button Content=">" Grid.Row="1" Grid.Column="14"/>
+                <Button Content="{}{" Grid.Row="1" Grid.Column="16"/>
+                <Button Content="}" Grid.Row="1" Grid.Column="18"/>
+
+                <Button Content="♡" Grid.Row="2" Grid.Column="0"/>
+                <Button Content="☆" Grid.Row="2" Grid.Column="2"/>
+                <Button Content="※" Grid.Row="2" Grid.Column="4"/>
+                <Button Content="☏" Grid.Row="2" Grid.Column="6"/>
+                <Button Content="€" Grid.Row="2" Grid.Column="8"/>
+                <Button Content="￥" Grid.Row="2" Grid.Column="10"/>
+                <Button Content="￠" Grid.Row="2" Grid.Column="12"/>
+                <Button Content="|" Grid.Row="2" Grid.Column="14"/>
+                <Button Content="[" Grid.Row="2" Grid.Column="16"/>
+                <Button Content="]" Grid.Row="2" Grid.Column="18"/>
+
+                <Button Content="`" Grid.Row="3" Grid.Column="0"/>
+                <Button Content="~" Grid.Row="3" Grid.Column="2"/>
+                <Button Content="'" Grid.Row="3" Grid.Column="4"/>
+                <Button Content="&quot;" Grid.Row="3" Grid.Column="6"/>
+                <Button Content=":" Grid.Row="3" Grid.Column="8"/>
+                <Button Content=";" Grid.Row="3" Grid.Column="10"/>
+                <Button Content="￦" Grid.Row="3" Grid.Column="12"/>
+                <Button Content="?" Grid.Row="3" Grid.Column="14"/>
+                <Button Style="{StaticResource BackspaceButton}" Grid.Row="3" Grid.Column="16" Grid.ColumnSpan="4"/>
+
+                <Button Style="{StaticResource MoveLeftButton}" Grid.Row="4" Grid.Column="0"/>
+                <Button Style="{StaticResource MoveRightButton}" Grid.Row="4" Grid.Column="2"/>
+                <Button Content="," Grid.Row="4" Grid.Column="4"/>
+                <Button Content=" " Grid.Row="4" Grid.Column="6" Grid.ColumnSpan="8"/>
+                <Button Content="." Grid.Row="4" Grid.Column="14"/>
+                <Button Style="{StaticResource SpeechButton}" Grid.Row="4" Grid.Column="16" Grid.ColumnSpan="4"/>
+            </Grid>
+            <Canvas x:Name="ManualInputPreviewCanvas" IsHitTestVisible="False" Visibility="Collapsed">
+                <Canvas x:Name="ManualInputPreview" Visibility="{Binding UsePreview, Converter={vk:BooleanToVisibilityConverter}}">
+                    <Canvas.OpacityMask>
+                        <LinearGradientBrush StartPoint="-200,0" EndPoint="200,0" MappingMode="Absolute">
+                            <GradientStop/>
+                            <GradientStop Color="White" Offset="0.3"/>
+                            <GradientStop Color="White" Offset="0.7"/>
+                            <GradientStop Offset="1"/>
+                        </LinearGradientBrush>
+                    </Canvas.OpacityMask>
+                    <Border
+                        Canvas.Top="{Binding ElementName=TextPanel, Path=ActualHeight, Converter={local:NumericScaleConverter}, ConverterParameter={vk:Double -0.5}}">
+                        <Canvas.Left>
+                            <MultiBinding Converter="{local:PreviewCanvasLeftConverter}">
+                                <Binding ElementName="PrevText" Path="ActualWidth"/>
+                                <Binding ElementName="MidText" Path="ActualWidth"/>
+                            </MultiBinding>
+                        </Canvas.Left>
+                        <Border Background="#807C3700" BorderBrush="#FFFF7100" BorderThickness="0,4" TextBlock.Foreground="White">
+                            <StackPanel x:Name="TextPanel" Orientation="Horizontal" Margin="300,0">
+                                <StackPanel.Triggers>
+                                    <EventTrigger RoutedEvent="Loaded">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PreviewCaret" Storyboard.TargetProperty="(UIElement.Opacity)" RepeatBehavior="Forever">
+                                                    <DiscreteDoubleKeyFrame KeyTime="00:00:00.0000000" Value="0" />
+                                                    <DiscreteDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1" />
+                                                    <DiscreteDoubleKeyFrame KeyTime="00:00:01.0000000" Value="0" />
+                                                </DoubleAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </StackPanel.Triggers>
+                                <TextBlock x:Name="PrevText" FontSize="64" Margin="-300,12,0,12" TextAlignment="Right"/>
+                                <Grid Margin="0,12">
+                                    <Rectangle x:Name="PreviewCaretBox" Fill="#80FF7100"/>
+                                    <TextBlock x:Name="MidText" FontSize="64"/>
+                                </Grid>
+                                <Border x:Name="PreviewCaret" BorderThickness="0,0,2,0" BorderBrush="White" Margin="0,12"/>
+                                <TextBlock x:Name="PostText" FontSize="64" Margin="0,12"/>
+                            </StackPanel>
+                        </Border>
+                    </Border>
+                </Canvas>
+            </Canvas>
+        </Grid>
+    </Grid>
+</UserControl>

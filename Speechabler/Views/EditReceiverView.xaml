@@ -1,0 +1,51 @@
+﻿<UserControl
+    x:Class="Speechabler.Views.EditReceiverView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vk="http://schemas.vagabond-k.com/winfx/2016/xaml"
+    xmlns:local="clr-namespace:Speechabler"
+    xmlns:model="clr-namespace:Speechabler.Models"
+    xmlns:vm="clr-namespace:Speechabler.ViewModels"
+    mc:Ignorable="d"
+    vk:Dialog.ResizeMode="NoResize"
+    vk:Dialog.ShowInTaskbar="False"
+    d:DataContext="{d:DesignInstance Type=vm:EditReceiverViewModel, IsDesignTimeCreatable=True}">
+    <Grid x:Name="Root" Margin="5" TextBlock.Foreground="{StaticResource TextBrush}">
+        <FrameworkElement.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+                <Setter Property="Margin" Value="5"/>
+            </Style>
+            <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Grid.Column" Value="1"/>
+                <Setter Property="Width" Value="150"/>
+                <Setter Property="Margin" Value="5"/>
+            </Style>
+            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="Margin" Value="2"/>
+                <Setter Property="Padding" Value="15, 3"/>
+            </Style>
+        </FrameworkElement.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Text="이름:"/>
+        <TextBox Grid.Row="0" Text="{Binding Name}" vk:Focus.IsDefault="True"/>
+        <TextBlock Grid.Row="1" Text="휴대폰:"/>
+        <TextBox Grid.Row="1" Text="{Binding PhoneNumber}"/>
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="2">
+            <Button Content="확인" IsDefault="True" vk:Dialog.IsOk="True"/>
+            <Button Content="취소" IsCancel="True"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

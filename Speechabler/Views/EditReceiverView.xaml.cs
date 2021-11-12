@@ -19,23 +19,12 @@ using System.Windows.Shapes;
 
 namespace Speechabler.Views
 {
-    public partial class MainWindow : VagabondK.ThemeWindow
+    [View]
+    public partial class EditReceiverView : UserControl
     {
-        public MainWindow()
+        public EditReceiverView()
         {
             InitializeComponent();
-
-            Closed += MainWindow_Closed;
-
-            DataContext = MainViewModel;
-            MainViewModel.LoadSettings();
-        }
-
-        private MainViewModel MainViewModel { get; } = new MainViewModel();
-
-        private void MainWindow_Closed(object sender, EventArgs e)
-        {
-            MainViewModel.SaveSettings();
         }
     }
 }

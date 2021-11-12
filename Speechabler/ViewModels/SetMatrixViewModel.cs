@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Speechabler.ViewModels
 {
+    [ViewModel]
     class SetMatrixViewModel : NotifyPropertyChangeObject
     {
         public int Rows { get => Get(3); set => Set(value); }

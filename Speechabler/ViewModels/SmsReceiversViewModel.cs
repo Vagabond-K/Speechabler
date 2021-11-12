@@ -8,34 +8,41 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using VagabondK.App;
 
 namespace Speechabler.ViewModels
 {
+    [ViewModel]
     class SmsReceiversViewModel : NotifyPropertyChangeObject
     {
+        public SmsReceiversViewModel(IDialog dialog)
+        {
+            this.dialog = dialog;
+        }
+
+        private readonly IDialog dialog;
+
         public SmsSetting Settings { get => Get(() => new SmsSetting()); private set => Set(value); }
 
-        public IInstantCommand AddReceiverCommand { get => Get(() =>
+        public IInstantCommand AddReceiverCommand => GetCommand(async () =>
         {
             SmsReceiver smsReceiver = new SmsReceiver();
 
-            if (EditReceiver(smsReceiver))
+            if (await EditReceiver(smsReceiver))
                 Settings.Receivers.Insert(Settings.Receivers.Count - 1, smsReceiver);
-        }); }
+        });
 
-        public IInstantCommand EditReceiverCommand { get => Get<SmsReceiver>(smsReceiver => EditReceiver(smsReceiver)); }
+        public IInstantCommand EditReceiverCommand => GetCommand<SmsReceiver>(async smsReceiver => await EditReceiver(smsReceiver));
 
-        public IInstantCommand RemoveReceiverCommand { get => Get<SmsReceiver>(smsReceiver => Settings.Receivers.Remove(smsReceiver)); }
+        public IInstantCommand RemoveReceiverCommand => GetCommand<SmsReceiver>(smsReceiver => Settings.Receivers.Remove(smsReceiver));
 
-        private bool EditReceiver(SmsReceiver smsReceiver)
+        private async Task<bool> EditReceiver(SmsReceiver smsReceiver)
         {
-            var viewModel = new EditReceiverViewModel
+            if (await dialog.ShowDialog<EditReceiverViewModel, EditReceiverView>("SMS 수신자 정보 편집", initViewModel =>
             {
-                Name = smsReceiver.Name,
-                PhoneNumber = smsReceiver.PhoneNumber
-            };
-
-            if (new EditReceiverWindow { DataContext = viewModel, Owner = Application.Current.MainWindow }.ShowDialog() == true)
+                initViewModel.Name = smsReceiver.Name;
+                initViewModel.PhoneNumber = smsReceiver.PhoneNumber;
+            }, out var viewModel) == true)
             {
                 smsReceiver.Name = viewModel.Name;
                 smsReceiver.PhoneNumber = viewModel.PhoneNumber;
@@ -46,24 +53,22 @@ namespace Speechabler.ViewModels
             return false;
         }
 
-        public IInstantCommand EditSmsApiSettingCommand { get => Get(() =>
+        public IInstantCommand EditSmsApiSettingCommand => GetCommand(async () =>
         {
-            var viewModel = new EditSmsApiSettingViewModel
+            if (await dialog.ShowDialog<EditSmsApiSettingViewModel, EditSmsApiSettingView>("SMS API 설정", initViewModel =>
             {
-                ServiceID = Settings.SmsApiSetting.ServiceID,
-                AccessKeyID = Settings.SmsApiSetting.AccessKeyID,
-                SecretKey = Settings.SmsApiSetting.SecretKey,
-                SenderPhoneNumber = Settings.SmsApiSetting.SenderPhoneNumber,
-            };
-
-            if (new EditSmsApiSettingWindow { DataContext = viewModel, Owner = Application.Current.MainWindow }.ShowDialog() == true)
+                initViewModel.ServiceID = Settings.SmsApiSetting.ServiceID;
+                initViewModel.AccessKeyID = Settings.SmsApiSetting.AccessKeyID;
+                initViewModel.SecretKey = Settings.SmsApiSetting.SecretKey;
+                initViewModel.SenderPhoneNumber = Settings.SmsApiSetting.SenderPhoneNumber;
+            }, out var viewModel) == true)
             {
                 Settings.SmsApiSetting.ServiceID = viewModel.ServiceID;
                 Settings.SmsApiSetting.AccessKeyID = viewModel.AccessKeyID;
                 Settings.SmsApiSetting.SecretKey = viewModel.SecretKey;
                 Settings.SmsApiSetting.SenderPhoneNumber = viewModel.SenderPhoneNumber;
             }
-        }); }
+        });
 
         public void LoadSettings()
         {
