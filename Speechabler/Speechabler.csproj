@@ -144,10 +144,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Util\DiscordUtil.cs" />
     <Compile Include="Util\JsonSetting.cs" />
     <Compile Include="Models\SmsApiSetting.cs" />
     <Compile Include="Models\SmsReceiver.cs" />
     <Compile Include="Models\SmsSetting.cs" />
+    <Compile Include="Util\SmsUtil.cs" />
     <Compile Include="Util\SpeechUtil.cs" />
     <Compile Include="ViewModels\EditSmsApiSettingViewModel.cs" />
     <Compile Include="ViewModels\ManualInputMessageViewModel.cs" />

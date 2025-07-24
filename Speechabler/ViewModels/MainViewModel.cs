@@ -22,13 +22,14 @@ namespace Speechabler.ViewModels
     [ViewModel]
     class MainViewModel : NotifyPropertyChangeObject
     {
-        public MainViewModel(MessagesViewModel messages, ManualInputMessageViewModel manualInputMessage, SmsReceiversViewModel smsReceivers, SpeechUtil speechUtil)
+        public MainViewModel(MessagesViewModel messages, ManualInputMessageViewModel manualInputMessage, SmsReceiversViewModel smsReceivers, SpeechUtil speechUtil, DiscordUtil discordUtil, SmsUtil smsUtil)
         {
             Messages = messages;
             ManualInputMessage = manualInputMessage;
             SmsReceivers = smsReceivers;
             SpeechUtil = speechUtil;
-
+            this.smsUtil = smsUtil;
+            this.discordUtil = discordUtil;
             Messages.UseMessageButton = true;
 
             if (DesignerProperties.GetIsInDesignMode(new System.Windows.FrameworkElement()))
@@ -53,7 +54,9 @@ namespace Speechabler.ViewModels
             }
         }
 
-        private SpeechSynthesizer speechSynthesizer = null;
+        private readonly SpeechSynthesizer speechSynthesizer = null;
+        private readonly SmsUtil smsUtil;
+        private readonly DiscordUtil discordUtil;
 
         public MessagesViewModel Messages { get; }
         public ManualInputMessageViewModel ManualInputMessage { get; }
@@ -91,6 +94,8 @@ namespace Speechabler.ViewModels
             if (string.IsNullOrWhiteSpace(message))
                 message = messageItem.Title.Replace("\r\n", "\n");
 
+            _ = discordUtil.SendWebhook(message);
+            _ = smsUtil.SendSMS(message);
             SpeechUtil.Speech(message);
         });
 
