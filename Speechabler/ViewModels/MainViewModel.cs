@@ -1,34 +1,31 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using Speechabler.Models;
+﻿using Speechabler.Models;
 using Speechabler.Util;
+using Speechabler.Views;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Security.Cryptography;
 using System.Speech.Synthesis;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+using VagabondK.App;
 
 namespace Speechabler.ViewModels
 {
     [ViewModel]
     class MainViewModel : NotifyPropertyChangeObject
     {
-        public MainViewModel(MessagesViewModel messages, ManualInputMessageViewModel manualInputMessage, SmsReceiversViewModel smsReceivers, SpeechUtil speechUtil, DiscordUtil discordUtil, SmsUtil smsUtil)
+        public MainViewModel(
+            MessagesViewModel messages,
+            ManualInputMessageViewModel manualInputMessage,
+            SmsReceiversViewModel smsReceivers,
+            SpeechUtil speechUtil,
+            DiscordUtil discordUtil,
+            SmsUtil smsUtil,
+            IDialog dialog)
         {
             Messages = messages;
             ManualInputMessage = manualInputMessage;
             SmsReceivers = smsReceivers;
             SpeechUtil = speechUtil;
             this.smsUtil = smsUtil;
+            this.dialog = dialog;
             this.discordUtil = discordUtil;
             Messages.UseMessageButton = true;
 
@@ -56,6 +53,7 @@ namespace Speechabler.ViewModels
 
         private readonly SpeechSynthesizer speechSynthesizer = null;
         private readonly SmsUtil smsUtil;
+        private readonly IDialog dialog;
         private readonly DiscordUtil discordUtil;
 
         public MessagesViewModel Messages { get; }
@@ -64,6 +62,18 @@ namespace Speechabler.ViewModels
         public SpeechUtil SpeechUtil { get; }
 
         public bool IsEditMode { get => Get(false); private set => Set(value); }
+
+        public IInstantCommand EditDiscordSettingCommand => GetCommand(async () =>
+        {
+            if (await dialog.ShowDialog<EditDiscordSettingViewModel, EditDiscordSettingView>("Discord 설정", initViewModel =>
+            {
+                initViewModel.WebhookUrl = discordUtil.Setting.WebhookUrl;
+            }, out var viewModel) == true)
+            {
+                discordUtil.Setting.WebhookUrl = viewModel.WebhookUrl;
+                discordUtil.SaveSettings();
+            }
+        });
 
         public IInstantCommand EditContentsCommand => GetCommand(() =>
         {

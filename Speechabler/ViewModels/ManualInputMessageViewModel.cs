@@ -1,10 +1,6 @@
 ﻿using Speechabler.Util;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VagabondK.App;
 using VagabondK.Korean.Hangul;
 

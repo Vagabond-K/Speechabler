@@ -61,6 +61,7 @@ namespace Speechabler.ViewModels
                 Settings.SmsApiSetting.AccessKeyID = viewModel.AccessKeyID;
                 Settings.SmsApiSetting.SecretKey = viewModel.SecretKey;
                 Settings.SmsApiSetting.SenderPhoneNumber = viewModel.SenderPhoneNumber;
+                SaveSettings();
             }
         });
 

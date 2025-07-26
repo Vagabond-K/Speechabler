@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Speechabler.Models;
 using System;
 using System.Net.Http;
 using System.Text;
@@ -9,9 +10,19 @@ namespace Speechabler.Util
     [ServiceDescription(Microsoft.Extensions.DependencyInjection.ServiceLifetime.Singleton)]
     class DiscordUtil
     {
+        public DiscordUtil()
+        {
+            LoadSettings();
+        }
+
+        public DiscordSetting Setting { get; private set; }
+
         public async Task SendWebhook(string message)
         {
-            var webhookUrl = "https://discord.com/api/webhooks/여기에_당신의_웹훅_URL";
+            var webhookUrl = Setting.WebhookUrl;
+
+            if (string.IsNullOrWhiteSpace(webhookUrl) || string.IsNullOrWhiteSpace(message))
+                return;
 
             var payload = new
             {
@@ -29,6 +40,16 @@ namespace Speechabler.Util
                     //TODO: 전송 오류에 대한 처리 해야 함.
                 }
             }
+        }
+
+        public void LoadSettings()
+        {
+            Setting = JsonSetting.LoadSetting<DiscordSetting>() ?? new DiscordSetting();
+        }
+
+        public void SaveSettings()
+        {
+            JsonSetting.SaveSetting(Setting);
         }
     }
 }

@@ -116,6 +116,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Views\EditDiscordSettingView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\EditSmsApiSettingView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -144,6 +148,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\DiscordSetting.cs" />
     <Compile Include="Util\DiscordUtil.cs" />
     <Compile Include="Util\JsonSetting.cs" />
     <Compile Include="Models\SmsApiSetting.cs" />
@@ -151,6 +156,7 @@
     <Compile Include="Models\SmsSetting.cs" />
     <Compile Include="Util\SmsUtil.cs" />
     <Compile Include="Util\SpeechUtil.cs" />
+    <Compile Include="ViewModels\EditDiscordSettingViewModel.cs" />
     <Compile Include="ViewModels\EditSmsApiSettingViewModel.cs" />
     <Compile Include="ViewModels\ManualInputMessageViewModel.cs" />
     <Compile Include="ViewModels\SetMatrixViewModel.cs" />
@@ -158,6 +164,9 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\MessagesViewModel.cs" />
     <Compile Include="ViewModels\SmsReceiversViewModel.cs" />
+    <Compile Include="Views\EditDiscordSettingView.xaml.cs">
+      <DependentUpon>EditDiscordSettingView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\EditSmsApiSettingView.xaml.cs">
       <DependentUpon>EditSmsApiSettingView.xaml</DependentUpon>
     </Compile>

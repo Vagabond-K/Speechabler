@@ -466,6 +466,12 @@
                     <TextBlock Margin="12,0,0,0">메시지 격자 설정</TextBlock>
                 </StackPanel>
             </Button>
+            <Button Command="{Binding EditDiscordSettingCommand}" IsEnabled="{Binding IsEditMode, Converter={StaticResource NegationConverter}}">
+                <StackPanel>
+                    <Path Fill="{Binding Foreground, ElementName=Button_DiscordSetting}" Height="24" Width="24" Stretch="Uniform" Data="M19,6.75A9.2017,9.2017,0,0,0,14.625,5l-.2135.4274a8.4519,8.4519,0,0,1,4.151,2.1976A12.87,12.87,0,0,0,12,5.875a12.87,12.87,0,0,0-6.5625,1.75,8.6339,8.6339,0,0,1,4.151-2.1976L9.375,5A9.1429,9.1429,0,0,0,5,6.75S2.76,9.9989,2.375,16.375A8.2659,8.2659,0,0,0,8.0625,19l.7175-.9555A8.7654,8.7654,0,0,1,5,15.5a11.032,11.032,0,0,0,7,2.1875A11.032,11.032,0,0,0,19,15.5a8.7609,8.7609,0,0,1-3.78,2.5445L15.9375,19a8.2659,8.2659,0,0,0,5.6875-2.625C21.24,9.9989,19,6.75,19,6.75ZM9.1562,14.625a1.6511,1.6511,0,0,1-1.5312-1.75,1.6511,1.6511,0,0,1,1.5312-1.75,1.6511,1.6511,0,0,1,1.5313,1.75A1.6511,1.6511,0,0,1,9.1562,14.625Zm5.6876,0a1.6511,1.6511,0,0,1-1.5313-1.75,1.6511,1.6511,0,0,1,1.5313-1.75,1.6511,1.6511,0,0,1,1.5312,1.75A1.6511,1.6511,0,0,1,14.8438,14.625Z"/>
+                    <TextBlock x:Name="Button_DiscordSetting" Margin="12,0,0,0">Discord 설정</TextBlock>
+                </StackPanel>
+            </Button>
             <Button Command="{Binding SmsReceivers.EditSmsApiSettingCommand}" IsEnabled="{Binding IsEditMode, Converter={StaticResource NegationConverter}}">
                 <StackPanel>
                     <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="24">&#xF716;</TextBlock>

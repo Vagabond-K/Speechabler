@@ -4,9 +4,9 @@ using System.Windows.Controls;
 namespace Speechabler.Views
 {
     [View]
-    public partial class MainView : UserControl
+    public partial class EditDiscordSettingView : UserControl
     {
-        public MainView()
+        public EditDiscordSettingView()
         {
             InitializeComponent();
         }
